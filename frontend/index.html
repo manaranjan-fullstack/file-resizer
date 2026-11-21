@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal File Resizer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Universal File Resizer</h1>
+    <p>Choose exactly how much you want to shrink your file</p>
+
+    <div class="drop-zone" id="dropZone">
+      <p id="fileName">Drag & drop a file here, or click to select</p>
+      <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx" hidden />
+    </div>
+
+    <div class="controls">
+      <label for="modeSelect"><strong>Resize Mode:</strong></label>
+      <select id="modeSelect">
+        <option value="preset">Smart Preset (Light / Medium / Strong)</option>
+        <option value="custom">Custom Scale & Quality</option>
+        <option value="dimensions">Custom Dimensions (Max Width / Height)</option>
+        <option value="target">Exact Target File Size (KB)</option>
+      </select>
+
+      <!-- Mode 1: Smart Preset -->
+      <div id="presetControls" class="mode-panel">
+        <label for="presetLevel">Reduction Strength:</label>
+        <select id="presetLevel">
+          <option value="light">Light (~25% smaller, near-original quality)</option>
+          <option value="medium" selected>Medium (~50% smaller, balanced)</option>
+          <option value="strong">Strong (~75% smaller, web-ready)</option>
+        </select>
+      </div>
+
+      <!-- Mode 2: Custom Scale & Quality -->
+      <div id="customControls" class="mode-panel" hidden>
+        <label>Resolution Scale: <strong><span id="sVal">75</span>%</strong></label>
+        <input type="range" id="scaleSlider" min="10" max="100" value="75" />
+        <label>Compression Quality: <strong><span id="qVal">75</span>%</strong></label>
+        <input type="range" id="qualitySlider" min="10" max="95" value="75" />
+      </div>
+
+      <!-- Mode 3: Dimensions -->
+      <div id="dimensionControls" class="mode-panel" hidden>
+        <div class="row">
+          <input type="number" id="maxWidth" placeholder="Max Width (px)" min="50" />
+          <input type="number" id="maxHeight" placeholder="Max Height (px)" min="50" />
+        </div>
+      </div>
+
+      <!-- Mode 4: Target KB -->
+      <div id="targetControls" class="mode-panel" hidden>
+        <label for="targetKb">Maximum Output Size (KB):</label>
+        <input type="number" id="targetKb" placeholder="e.g. 200" min="10" value="200" />
+      </div>
+    </div>
+
+    <button id="resizeBtn">Resize & Download</button>
+    <p id="status"></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
