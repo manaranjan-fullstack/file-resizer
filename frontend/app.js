@@ -15,7 +15,6 @@ const panels = {
 let selectedFile = null;
 let lastDownloadUrl = null;
 
-// Show the relevant control panel when the resize mode changes
 modeSelect.addEventListener("change", () => {
   Object.values(panels).forEach((p) => {
     if (p) p.hidden = true;
@@ -25,7 +24,6 @@ modeSelect.addEventListener("change", () => {
   }
 });
 
-// Range slider value update
 const scaleSlider = document.getElementById("scaleSlider");
 const qualitySlider = document.getElementById("qualitySlider");
 
@@ -41,7 +39,6 @@ if (qualitySlider) {
   });
 }
 
-// Dropzone click & drag-and-drop events
 dropZone.addEventListener("click", () => fileInput.click());
 
 fileInput.addEventListener("change", (e) => {
@@ -75,7 +72,6 @@ function handleFileSelect(file) {
   statusText.innerText = "";
 }
 
-// Resize & Download button click handler
 resizeBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
@@ -84,7 +80,6 @@ resizeBtn.addEventListener("click", async (e) => {
     return;
   }
 
-  // Revoke the previous object URL to free up memory if it exists
   if (lastDownloadUrl) {
     window.URL.revokeObjectURL(lastDownloadUrl);
     lastDownloadUrl = null;
@@ -131,7 +126,6 @@ resizeBtn.addEventListener("click", async (e) => {
   }
 
   try {
-    // Using the relative path "/api/resize" works best when served from a FastAPI server
     const response = await fetch("/api/resize", {
       method: "POST",
       body: formData,
@@ -142,7 +136,7 @@ resizeBtn.addEventListener("click", async (e) => {
       try {
         const errData = await response.json();
         errorMsg = errData.detail || errorMsg;
-      } catch (_) {}
+      } catch (_) { }
       throw new Error(errorMsg);
     }
 
@@ -154,7 +148,6 @@ resizeBtn.addEventListener("click", async (e) => {
     lastDownloadUrl = window.URL.createObjectURL(blob);
     const downloadName = `resized_${selectedFile.name}`;
 
-    // Automatic download trigger
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = lastDownloadUrl;
@@ -162,7 +155,6 @@ resizeBtn.addEventListener("click", async (e) => {
     document.body.appendChild(a);
     a.click();
 
-    // Status + Manual fallback download link
     statusText.style.color = "#059669";
     statusText.innerHTML = `
       Done! <strong>${oldKb} KB → ${newKb} KB</strong> (${savedPct > 0 ? savedPct + "% smaller" : "optimized"})<br>

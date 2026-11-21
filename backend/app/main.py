@@ -14,9 +14,7 @@ app.add_middleware(
     expose_headers=["Content-Disposition"],
 )
 
-# API routes
 app.include_router(resize_router, prefix="/api")
 
-# Serve the frontend folder (one level up from the backend folder: ../frontend)
 frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")

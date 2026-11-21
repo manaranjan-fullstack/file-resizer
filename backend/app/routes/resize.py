@@ -1,6 +1,7 @@
 import os
 import uuid
 import tempfile
+import traceback
 from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse
@@ -11,7 +12,6 @@ from app.utils.cleanup import cleanup_old_files
 
 router = APIRouter()
 
-# Use the system temp folder outside the project directory so Live Server does not reload
 BASE_TEMP_DIR = os.path.join(tempfile.gettempdir(), "file_resizer_temp")
 UPLOAD_DIR = os.path.join(BASE_TEMP_DIR, "uploads")
 OUTPUT_DIR = os.path.join(BASE_TEMP_DIR, "outputs")
@@ -47,11 +47,28 @@ async def resize_file(
                 target_kb=target_kb
             )
         elif ext == ".pdf":
-            compress_pdf(input_path, output_path, quality=quality, scale=scale, target_kb=target_kb)
+            compress_pdf(
+                input_path, output_path,
+                quality=quality, scale=scale,
+                target_kb=target_kb
+            )
         elif ext == ".docx":
-            compress_docx(input_path, output_path, quality=quality, scale=scale, target_kb=target_kb)
+            compress_docx(
+                input_path, output_path,
+                quality=quality, scale=scale,
+                target_kb=target_kb
+            )
         else:
-            raise HTTPException(status_code=400, detail="Unsupported file format")
+            raise HTTPException(status_code=400, detail=f"Unsupported file format: {ext}")
+
+        if not os.path.exists(output_path):
+            raise HTTPException(status_code=500, detail="Output file was not generated.")
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Server Error: {str(e)}")
     finally:
         if os.path.exists(input_path):
             os.remove(input_path)

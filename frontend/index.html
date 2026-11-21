@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <h1>Universal File Resizer</h1>
-    <p>Choose exactly how much you want to shrink your file</p>
+    <p class="subtitle">Compress Images (JPG, PNG, WebP), PDFs, and Word Docs (.docx)</p>
 
     <div class="drop-zone" id="dropZone">
       <p id="fileName">Drag & drop a file here, or click to select</p>
@@ -25,7 +25,6 @@
         <option value="target">Exact Target File Size (KB)</option>
       </select>
 
-      <!-- Mode 1: Smart Preset -->
       <div id="presetControls" class="mode-panel">
         <label for="presetLevel">Reduction Strength:</label>
         <select id="presetLevel">
@@ -35,7 +34,6 @@
         </select>
       </div>
 
-      <!-- Mode 2: Custom Scale & Quality -->
       <div id="customControls" class="mode-panel" hidden>
         <label>Resolution Scale: <strong><span id="sVal">75</span>%</strong></label>
         <input type="range" id="scaleSlider" min="10" max="100" value="75" />
@@ -43,7 +41,6 @@
         <input type="range" id="qualitySlider" min="10" max="95" value="75" />
       </div>
 
-      <!-- Mode 3: Dimensions -->
       <div id="dimensionControls" class="mode-panel" hidden>
         <div class="row">
           <input type="number" id="maxWidth" placeholder="Max Width (px)" min="50" />
@@ -51,15 +48,15 @@
         </div>
       </div>
 
-      <!-- Mode 4: Target KB -->
       <div id="targetControls" class="mode-panel" hidden>
         <label for="targetKb">Maximum Output Size (KB):</label>
-        <input type="number" id="targetKb" placeholder="e.g. 200" min="10" value="200" />
+        <input type="number" id="targetKb" placeholder="e.g. 15" min="5" value="50" />
       </div>
     </div>
 
-    <button id="resizeBtn">Resize & Download</button>
+    <button type="button" id="resizeBtn">Resize & Download</button>
     <p id="status"></p>
+    <p class="privacy-note">Files are processed securely and auto-deleted within 15 minutes.</p>
   </div>
 
   <script src="app.js"></script>

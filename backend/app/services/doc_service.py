@@ -28,7 +28,7 @@ def compress_docx(input_path: str, output_path: str, quality: int = 70, scale: f
 
     if target_kb:
         target_bytes = target_kb * 1024
-        for s, q in [(0.8, 70), (0.6, 55), (0.45, 40), (0.3, 30), (0.2, 20)]:
+        for s, q in [(0.75, 65), (0.5, 50), (0.35, 35), (0.2, 20), (0.1, 10)]:
             run_pass(q, s)
             if os.path.getsize(output_path) <= target_bytes:
                 return
